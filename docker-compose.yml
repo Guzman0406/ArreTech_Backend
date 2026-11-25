@@ -1,0 +1,37 @@
+services:
+  db:
+    image: postgres:16-alpine
+    container_name: arretech_db
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: arretech
+      POSTGRES_PASSWORD: arretech_dev_pass
+      POSTGRES_DB: arretech_db
+    ports:
+      - "5434:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U arretech -d arretech_db"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  api:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: arretech_api
+    restart: unless-stopped
+    env_file:
+      - ./backend/.env
+    ports:
+      - "8004:8004"
+    depends_on:
+      db:
+        condition: service_healthy
+    volumes:
+      - ./backend:/app
+
+volumes:
+  pgdata:
