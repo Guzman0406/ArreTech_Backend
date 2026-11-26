@@ -6,6 +6,7 @@ from app.modules.roles.repository import obtener_rol_por_id, obtener_rol_por_uui
 from app.modules.usuarios.repository import (
     actualizar_usuario,
     crear_usuario,
+    eliminar_usuario,
     listar_usuarios,
     obtener_usuario_por_correo,
     obtener_usuario_por_numero_empleado,
@@ -105,3 +106,11 @@ async def actualizar(db: AsyncSession, usuario_uuid: str, datos: UsuarioUpdate) 
 
     rol = await obtener_rol_por_id(db, usuario.id_rol)
     return _a_respuesta(usuario, rol.nombre)
+
+
+async def eliminar(db: AsyncSession, usuario_uuid: str) -> None:
+    usuario = await obtener_usuario_por_uuid(db, usuario_uuid)
+    if usuario is None:
+        raise NotFoundError("Usuario no encontrado")
+
+    await eliminar_usuario(db, usuario)

@@ -1,5 +1,6 @@
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
+from datetime import datetime, timezone
 
 from app.modules.usuarios.models import Usuario
 
@@ -60,3 +61,8 @@ async def actualizar_usuario(db: AsyncSession, usuario: Usuario, cambios: dict) 
     await db.commit()
     await db.refresh(usuario)
     return usuario
+    
+
+async def eliminar_usuario(db: AsyncSession, usuario: Usuario) -> None:
+    usuario.deleted_at = datetime.now(timezone.utc)
+    await db.commit()

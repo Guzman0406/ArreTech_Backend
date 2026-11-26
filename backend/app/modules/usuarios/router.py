@@ -5,7 +5,7 @@ from app.core.database import get_db
 from app.core.dependencies import requiere_rol
 from app.core.responses import success_response
 from app.modules.usuarios.schemas import UsuarioCreate, UsuarioUpdate
-from app.modules.usuarios.service import actualizar, crear, listar, obtener
+from app.modules.usuarios.service import actualizar, crear, eliminar, listar, obtener
 
 router = APIRouter(
     prefix="/api/v1/usuarios",
@@ -46,3 +46,12 @@ async def actualizar_usuario_endpoint(
 ):
     resultado = await actualizar(db, usuario_uuid, datos)
     return success_response(data=resultado.model_dump())
+
+
+@router.delete("/{usuario_uuid}")
+async def eliminar_usuario_endpoint(
+    usuario_uuid: str,
+    db: AsyncSession = Depends(get_db),
+):
+    await eliminar(db, usuario_uuid)
+    return success_response(message="Usuario dado de baja correctamente")
