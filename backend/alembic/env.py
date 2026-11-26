@@ -19,6 +19,8 @@ if config.config_file_name is not None:
 
 target_metadata = Base.metadata
 
+connect_args = {"ssl": "require"} if settings.app_env == "production" else {}
+
 
 def run_migrations_offline() -> None:
     url = config.get_main_option("sqlalchemy.url")
@@ -45,6 +47,7 @@ async def run_migrations_online() -> None:
         config.get_section(config.config_ini_section, {}),
         prefix="sqlalchemy.",
         poolclass=pool.NullPool,
+        connect_args=connect_args,
     )
 
     async with connectable.connect() as connection:
