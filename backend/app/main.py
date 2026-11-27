@@ -5,6 +5,7 @@ from app.modules.auth.router import router as auth_router
 from app.modules.roles.router import router as roles_router
 from app.modules.usuarios.router import router as usuarios_router
 from app.modules.productos.router import router as productos_router
+from app.modules.clientes.router import router as clientes_router
 
 app = FastAPI(
     title="ArreTech API",
@@ -17,6 +18,7 @@ app.include_router(auth_router)
 app.include_router(roles_router)
 app.include_router(usuarios_router)
 app.include_router(productos_router)
+app.include_router(clientes_router)
 
 @app.get("/health", tags=["Health"])
 async def health_check():
