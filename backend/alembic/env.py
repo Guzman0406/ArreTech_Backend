@@ -12,6 +12,7 @@ from app.modules.roles.models import Rol  # noqa: F401
 from app.modules.usuarios.models import Usuario  # noqa: F401
 from app.modules.productos.models import Producto  # noqa: F401
 from app.modules.clientes.models import Cliente #noqa: f401
+from app.modules.movimientos.models import MovimientoInventario  # noqa: F401
 
 config = context.config
 config.set_main_option("sqlalchemy.url", settings.database_url)
